@@ -77,10 +77,10 @@ class ICCardPacketData{
 }
 ```
 
-| 属性          |     说明          |
-| ------------ | ----------------- |
-| icCardNo     | IC/ID的卡号字节数组 |
-| icCardNoText | IC/ID的卡号字符串   |
+| 属性            | 说明                    |
+|---------------|-----------------------|
+| icCardNo      | IC/ID的卡号字节数组          |
+| icCardNoText  | IC/ID的卡号字符串           |
 
 
 #### 抽屉控制
@@ -93,8 +93,8 @@ class ICCardPacketData{
 JRIDevicesManager.instance.openTheDoor(drawer:Int)
 ```
 
-| 参数                          | 说明       |
-|-----------------------------|----------|
+| 参数         | 说明       |
+|------------|----------|
 | drawer:Int | 需盘存的抽屉序号 |
 
 ##### 抽屉状态监听
@@ -116,10 +116,10 @@ JRIDevicesManager.instance.addOnReceivedBasicDataCallback(object : ReceivedBasic
 
 `ReceivedBasicDataCallback`回调方法说明
 
-| 方法              | 说明       |
-| ------------------- |----------|
-| fun onDoorOpen(drawer:Int)  | 抽屉打开时的回调 |
-| fun onDoorClose(drawer:Int) | 抽屉关闭时的回调 |
+| 方法                            | 说明       |
+|-------------------------------|----------|
+| fun onDoorOpen(drawer:Int)    | 抽屉打开时的回调 |
+| fun onDoorClose(drawer:Int)   | 抽屉关闭时的回调 |
 
 #### 超高频模块控制
 
@@ -129,8 +129,8 @@ JRIDevicesManager.instance.addOnReceivedBasicDataCallback(object : ReceivedBasic
 JRIDevicesManager.instance.startUhfInventory(drawer:Int)
 ```
 
-| 参数                          | 说明       |
-|-----------------------------|----------|
+| 参数         | 说明       |
+|------------|----------|
 | drawer:Int | 需盘存的抽屉序号 |
 
 ##### 获取盘存结果
