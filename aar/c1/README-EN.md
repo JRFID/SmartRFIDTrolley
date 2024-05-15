@@ -2,17 +2,16 @@
 
 ### [📖中文文档](README.md) | 📖English Document
 
-本文是智能RFID推车 JRI-ST-C1（以下简称：推车）SDK的标准的集成指南文档，用以说明推车SDK的使用方法。默认读者已经熟悉Android
-Studio的基本使用方法，熟悉kotlin的基本语法，并且具有一定的Android编程基础。
+This document is the standard integration guide document for the Smart RFID Trolley JRI-ST-C1 (hereinafter referred to as the trolley) SDK, 
+used to explain the usage of the trolley SDK. The default readers are already familiar with the basic usage of Android Studio, familiar with the basic syntax of Kotlin, and have a certain foundation in Android programming.
 
-耗材柜SDK包含两个`aar`包，分别是位于[aar/core](/aar/core/)中的`jri-manager-core-*.aar`
-与位于[aar/c1](/aar/c1/)中的`jri-manager-st-c1-*.aar`。开发时请同时导入两个最新版`aar`包到你的项目中。
+The trolley SDK contains two `aar` packages, namely `jri-manager-core-*.aar` located in [aar/core](/aar/core/) and `jri-manager-st-c1-*.aar` located in [aar/c1](/aar/c1/). Please import both latest versions of the `aar` package into your project.
 
-## 更新记录
+## Update 
 
 #### 1.0.4 📅`2024.03.04`
 
-* 简化初始化逻辑
+* Simplify init logic
 
 [Click to view more update records](CHANGE-LOG.md)
 
@@ -20,8 +19,8 @@ Studio的基本使用方法，熟悉kotlin的基本语法，并且具有一定�
 
 ### Copy File
 
-1. Download the latest `jri-manager-core-*.aar` file from the `core` folder.
-2. Download the latest `jri-manager-st-c1-*.aar` file from the `c1` folder.
+1. Download the latest version of `jri-manager-core-*.aar` file from the `core` folder.
+2. Download the latest version of `jri-manager-st-c1-*.aar` file from the `c1` folder.
 3. Copy the two files to the `libs` folder in your project.
 
 ### Add Dependency
@@ -55,7 +54,7 @@ lifecycleScope.launch(Dispatchers.IO) {
 
 #### IC/ID Module
 
-##### Listening IC/ID Data
+##### Listening IC/ID card data
 
 ```
 JRIDevicesManager.instance.addOnReceivedICCardDataCallback(object : ReceivedICCardDataCallback {
@@ -86,7 +85,7 @@ class ICCardPacketData{
 
 #### Drawer Control
 
-##### Open The Drawer
+##### Open the drawer
 
 The trolley has a total of 6 drawers from top to bottom, corresponding to numbers 1-6.
 
@@ -98,7 +97,7 @@ JRIDevicesManager.instance.openTheDoor(drawer:Int)
 |------------|--------------------|
 | drawer:Int | drawer number(1-6) |
 
-##### Listening Drawer State
+##### Listening drawer state
 
 ```
 JRIDevicesManager.instance.addOnReceivedBasicDataCallback(object : ReceivedBasicDataCallback {
@@ -124,7 +123,7 @@ JRIDevicesManager.instance.addOnReceivedBasicDataCallback(object : ReceivedBasic
 
 #### UHF Control
 
-##### Start Inventory
+##### Start inventory
 
 ```
 JRIDevicesManager.instance.startUhfInventory(drawer:Int)
@@ -134,7 +133,7 @@ JRIDevicesManager.instance.startUhfInventory(drawer:Int)
 |------------|--------------------|
 | drawer:Int | drawer number(1-6) |
 
-##### Listening Inventory Result
+##### Listening inventory result
 
 ```
 JRIDevicesManager.instance.addOnReceivedUhfInventoryDataCallback(object:ReceivedUhfInventoryDataCallback{
@@ -184,35 +183,35 @@ class InventoryTag {
 
 #### Finger Vein Control
 
-##### Recommended Usage Process
+##### Recommended usage process
 
-###### Get Finger Vein
+###### Get finger vein
 
 get finger vein characteristic value in three stages -> composite finger vein template -> save finger vein template
 
-###### Check Finger Vein
+###### Check finger vein
 
 import finger vein template into the search library -> save the returned id and bind it to the user -> get finger vein characteristic value -> check if the finger vein characteristic value exists in the search library
 
-##### Whether To Place Finger
+##### Whether to place finger
 
-after calling this method, it will return a result of type `Boolean`,`true` is finger placed on the module,otherwise `false`.
+After calling this method, it will return a result of type `Boolean`,`true` is finger placed on the module,otherwise `false`.
 
 ```
 val result:Boolean = JRIDevicesManager.instance.checkFingerIn()
 ```
 
-##### Whether To Remove Finger
+##### Whether to remove finger
 
-after calling this method, it will return a result of type `Boolean`,`true` is finger removed from the module,otherwise `false`.
+After calling this method, it will return a result of type `Boolean`,`true` is finger removed from the module,otherwise `false`.
 
 ```
 val result:Boolean = JRIDevicesManager.instance.checkFingerOut()
 ```
 
-##### Waiting For Finger Placement
+##### Waiting for finger placement
 
-该操作为阻塞操作需放置到协程中调用，调用后会一直阻塞程序，检测到手指放置到指静脉模块上后会释放。
+This operation is a blocking operation that needs to be placed in the coroutine for calling. After calling, the program will be blocked all the time. When it is detected that the finger is placed on the finger vein module, it will be released.
 
 ```
 lifecycleScope.launch {
@@ -220,9 +219,9 @@ lifecycleScope.launch {
  }
 ```
 
-##### Waiting For Finger Removed
+##### Waiting for finger removed
 
-该操作为阻塞操作需放置到协程中调用，调用后会一直阻塞程序，检测到手指移开后会释放。
+This operation is a blocking operation that needs to be placed in the coroutine for calling. After calling, the program will be blocked all the time. When it is detected that the finger is removed from the finger vein module, it will be released.
 
 ```
 lifecycleScope.launch {
@@ -230,33 +229,32 @@ lifecycleScope.launch {
 }
 ```
 
-##### Get Finger Vein Characteristic Value
+##### Get finger vein characteristic value
 
-实时获取，只有当手指正确放置到指静脉模块上时调用后会立即返回`String`类型的指静脉特征值，其他情况下返回`null`。
+Real time acquisition, only when the finger is correctly placed on the finger vein module and called, will immediately return the `String` type finger vein characteristic value, and in other cases, return `null`.
 
 ```
 val result:String? = JRIDevicesManager.instance.getFingerVeinChara()
 ```
 
-阻塞获取，需放置到协程中调用，调用后会一直阻塞程序，直到获取到指静脉特征值后返回，如果设置的超时时间内未获取到指静脉特征值则返回`null`。
-
+Blocking acquisition,this needs to be placed in the coroutine for calling. After calling, the program will be blocked until the finger vein characteristic value is obtained. If the finger vein characteristic value is not obtained within the set timeout, it will return `null`.
 ```
 lifecycleScope.launch {
     val result: String? = JRIDevicesManager.instance.getFingerVeinChara(timeoutMillis = 1000)
 }
 ```
 
-##### Get Finger Vein Template
+##### Get finger vein template
 
-将分3次获取的指静脉特征值融合成一个特征值模版，融合成功返回`String`类型的特征值模版，融合失败则返回`null`。
+Merge the finger vein characteristic value obtained in three stages into a finger vein template. Success return true, otherwise return `null`.
 
 ```
 val result: String? = JRIDevicesManager.instance.createFingerVeinTemp("", "", "")
 ```
 
-##### Always Get Finger Vein Characteristic Value:boom:
+##### Continuously get finger vein characteristic value:boom:
 
-通过`kotlin`中`Flow`的形式持续获取指静脉特征值，可以根据返回的`MODEL_TYPE`反馈给用户做相应的操作。
+By continuously obtaining the finger vein characteristic values in the form of `flow` in `kotlin`, users can take corresponding actions based on the returned `MODEL_TYPE` feedback.
 
 ```
 lifecycleScope.launch {
@@ -264,19 +262,19 @@ lifecycleScope.launch {
         .flowOn(Dispatchers.IO)
         .collect {
             if (it.type == FingerVeinDataModel.MODEL_TYPE_FINGER_IN) {
-                LogUtils.d("请放置手指")
+                Log.d("Please place finger")
             } else if (it.type == FingerVeinDataModel.MODEL_TYPE_FINGER_OUT) {
-                LogUtils.d("请移开手指")
+                Log.d("Please remove finger")
             } else if (it.type == FingerVeinDataModel.MODEL_TYPE_CHARA_DATA) {
-                LogUtils.d("指静脉特征值为：${it.data}")
+                Log.d("finger vein characteristic value：${it.data}")
             }
         }
 }
 ```
 
-##### Always Get Finger Vein Template:boom:
+##### Continuously get finger vein template:boom:
 
-通过`kotlin`中`Flow`的形式持续获取指静脉特征值，可以根据返回的`MODEL_TYPE`反馈给用户做相应的操作。
+By continuously obtaining the finger vein template in the form of `flow` in `kotlin`, users can take corresponding actions based on the returned `MODEL_TYPE` feedback.
 
 ```
 lifecycleScope.launch {
@@ -284,17 +282,17 @@ lifecycleScope.launch {
         .flowOn(Dispatchers.IO)
         .collect {
             if (it.type == FingerVeinDataModel.MODEL_TYPE_FINGER_IN) {
-                 LogUtils.d("请放置手指")
+                 Log.d("Please place finger")
             } else if (it.type == FingerVeinDataModel.MODEL_TYPE_FINGER_OUT) {
-                 LogUtils.d("请移开手指")
+                 Log.d("Please remove finger")
             } else if (it.type == FingerVeinDataModel.MODEL_TYPE_TEMP_DATA) {
-                 LogUtils.d("指静脉特征值模版为：${it.data}")
+                 Log.d("finger vein template：${it.data}")
             }
          }
 }
 ```
 
-##### Add Finger Vein Template Into Search Library
+##### Add finger vein template into search library
 
 ```
 val id:Long = JRIDevicesManager.instance.addFingerVeinTempIntoLib(temp:String)
@@ -304,21 +302,21 @@ val id:Long = JRIDevicesManager.instance.addFingerVeinTempIntoLib(temp:String)
 |---------------|---------------------------------------|
 | temp:String   | create/get finger vein template value |
 
-| return      | description                                                                    |
-|-------------|--------------------------------------------------------------------------------|
-| id:Long     | id>0 added successfully,id<0 added failed,this id is error code.               |
+| return      | description                                                                                                                                        |
+|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| id:Long     | id>0 added successfully,and its value is the id value of the finger vein template in the search library.id<0 added failed,its value is error code. |
 
 
-##### Remove Finger Vein Template From Search Library
+##### Remove finger vein template from search library
 
 ```
 JRIDevicesManager.instance.removeFingerVeinTempFromLib(id:Long)
 ```
-| param          | description                                   |
-|----------------|-----------------------------------------------|
-| id:Long        | returned id when adding to the search library |
+| param          | description                                             |
+|----------------|---------------------------------------------------------|
+| id:Long        | The id value returned when adding to the search library |
 
-##### Remove All Finger Vein Template From Search Library
+##### Remove all finger vein template from search library
 
 ```
 JRIDevicesManager.instance.removeAllFingerVeinTempFromLib()
@@ -333,6 +331,6 @@ val id:Long = JRIDevicesManager.instance.checkCharaIsExist(chara:String)
 |---------------|---------------------------------------|
 | chara:String  | got finger vein characteristic value  |
 
-| return      | description                                                                    |
-|-------------|--------------------------------------------------------------------------------|
-| id:Long     | id>0 exist,id is the return value added to the search library,id<=0 otherwise. |
+| return      | description                                                                                                               |
+|-------------|---------------------------------------------------------------------------------------------------------------------------|
+| id:Long     | id>0 exist, the id value is the value returned by adding the finger vein template to the search library, id<=0 otherwise. |
