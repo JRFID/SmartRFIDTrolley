@@ -176,11 +176,11 @@ class InventoryTag {
 }
 ```
 
-| 属性/方法                      | 说明                                                           |
-| --------------------------- | ---------------------------------------------------------------- |
-| pc                        | 标签的pc数据                                                 |
-| epc                       | 标签epc数据                                                  |
-| rssi                      | 盘存到标签的rssi值                                              |
+| 属性/方法                           | 说明                  |
+|---------------------------------|---------------------|
+| pc                              | 标签的pc数据             |
+| epc                             | 标签epc数据             |
+| rssi                            | 盘存到标签的rssi值         |
 
 #### 指静脉模块控制
 
@@ -293,3 +293,45 @@ lifecycleScope.launch {
          }
 }
 ```
+
+##### 添加特征值模板到算法库
+
+```
+val id:Long = JRIDevicesManager.instance.addFingerVeinTempIntoLib(temp:String)
+```
+| 参数          | 说明       |
+|-------------|----------|
+| temp:String | 合成的特征值模板 |
+
+| 返回         | 说明                                            |
+|------------|-----------------------------------------------|
+| id:Long    | id>0添加成功，其值为特征值模版在算法库中的id值，id<0添加失败,其值为对应错误码。 |
+
+
+##### 从算法库移除特征值模板
+
+```
+JRIDevicesManager.instance.removeFingerVeinTempFromLib(id:Long)
+```
+| 参数      | 说明                |
+|---------|-------------------|
+| id:Long | 添加进算法库时返回的id值     |
+
+##### 从算法库移除所有特征值模板
+
+```
+JRIDevicesManager.instance.removeAllFingerVeinTempFromLib()
+```
+
+##### 检查特征值是否存在于算法库中
+
+```
+val id:Long = JRIDevicesManager.instance.checkCharaIsExist(chara:String)
+```
+| 参数           | 说明        |
+|--------------|-----------|
+| chara:String | 获取的指静脉特征值 |
+
+| 返回         | 说明                                              |
+|------------|-------------------------------------------------|
+| id:Long    | id>0 该特征值存在于算法库中，id值为特征值模版添加进算法库返回的值，id<=0 不存在。 |

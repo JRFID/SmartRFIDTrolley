@@ -186,31 +186,31 @@ class InventoryTag {
 
 ##### Recommended Usage Process
 
-###### Input Finger Vein
+###### Get Finger Vein
 
-分3次获取用户指静脉特征值 -> 合成指静脉特征值模版 -> 保存特征值模版
+get finger vein characteristic value in three stages -> composite finger vein template -> save finger vein template
 
 ###### Check Finger Vein
 
-导入特征值模版到算法库 -> 记录返回的ID并于用户绑定 -> 获取指静脉特征值 -> 验证特征值是否存在
+import finger vein template into the search library -> save the returned id and bind it to the user -> get finger vein characteristic value -> check if the finger vein characteristic value exists in the search library
 
-##### 是否放置手指
+##### Whether To Place Finger
 
-调用后立即返回`Boolean`类型结果，`true`表示有手指放置到指静脉模块上，反之则没有。
+after calling this method, it will return a result of type `Boolean`,`true` is finger placed on the module,otherwise `false`.
 
 ```
 val result:Boolean = JRIDevicesManager.instance.checkFingerIn()
 ```
 
-##### 是否移开手指
+##### Whether To Remove Finger
 
-调用后立即返回`Boolean`类型结果，`true`表示有没有手指放置到指静脉模块上，反之则有。
+after calling this method, it will return a result of type `Boolean`,`true` is finger removed from the module,otherwise `false`.
 
 ```
 val result:Boolean = JRIDevicesManager.instance.checkFingerOut()
 ```
 
-##### 等待手指放置
+##### Waiting For Finger Placement
 
 该操作为阻塞操作需放置到协程中调用，调用后会一直阻塞程序，检测到手指放置到指静脉模块上后会释放。
 
@@ -220,7 +220,7 @@ lifecycleScope.launch {
  }
 ```
 
-##### 等待手指移开
+##### Waiting For Finger Removed
 
 该操作为阻塞操作需放置到协程中调用，调用后会一直阻塞程序，检测到手指移开后会释放。
 
@@ -230,10 +230,9 @@ lifecycleScope.launch {
 }
 ```
 
-##### 获取指静脉特征值
+##### Get Finger Vein Characteristic Value
 
-实时获取，只有当手指正确放置到指静脉模块上时调用后会立即返回`String`
-类型的指静脉特征值，其他情况下返回`null`。
+实时获取，只有当手指正确放置到指静脉模块上时调用后会立即返回`String`类型的指静脉特征值，其他情况下返回`null`。
 
 ```
 val result:String? = JRIDevicesManager.instance.getFingerVeinChara()
@@ -247,16 +246,15 @@ lifecycleScope.launch {
 }
 ```
 
-##### 获取指静脉特征值模板
+##### Get Finger Vein Template
 
-将分3次获取的指静脉特征值融合成一个特征值模版，融合成功返回`String`
-类型的特征值模版，融合失败则返回`null`。
+将分3次获取的指静脉特征值融合成一个特征值模版，融合成功返回`String`类型的特征值模版，融合失败则返回`null`。
 
 ```
 val result: String? = JRIDevicesManager.instance.createFingerVeinTemp("", "", "")
 ```
 
-##### 持续获取指静脉特征值:boom:
+##### Always Get Finger Vein Characteristic Value:boom:
 
 通过`kotlin`中`Flow`的形式持续获取指静脉特征值，可以根据返回的`MODEL_TYPE`反馈给用户做相应的操作。
 
@@ -276,7 +274,7 @@ lifecycleScope.launch {
 }
 ```
 
-##### 持续获取指静脉特征值模版:boom:
+##### Always Get Finger Vein Template:boom:
 
 通过`kotlin`中`Flow`的形式持续获取指静脉特征值，可以根据返回的`MODEL_TYPE`反馈给用户做相应的操作。
 
@@ -295,3 +293,46 @@ lifecycleScope.launch {
          }
 }
 ```
+
+##### Add Finger Vein Template Into Search Library
+
+```
+val id:Long = JRIDevicesManager.instance.addFingerVeinTempIntoLib(temp:String)
+```
+
+| param         | description                           |
+|---------------|---------------------------------------|
+| temp:String   | create/get finger vein template value |
+
+| return      | description                                                                    |
+|-------------|--------------------------------------------------------------------------------|
+| id:Long     | id>0 added successfully,id<0 added failed,this id is error code.               |
+
+
+##### Remove Finger Vein Template From Search Library
+
+```
+JRIDevicesManager.instance.removeFingerVeinTempFromLib(id:Long)
+```
+| param          | description                                   |
+|----------------|-----------------------------------------------|
+| id:Long        | returned id when adding to the search library |
+
+##### Remove All Finger Vein Template From Search Library
+
+```
+JRIDevicesManager.instance.removeAllFingerVeinTempFromLib()
+```
+
+##### Check if finger vein characteristic value exist in the search library
+
+```
+val id:Long = JRIDevicesManager.instance.checkCharaIsExist(chara:String)
+```
+| param         | description                           |
+|---------------|---------------------------------------|
+| chara:String  | got finger vein characteristic value  |
+
+| return      | description                                                                    |
+|-------------|--------------------------------------------------------------------------------|
+| id:Long     | id>0 exist,id is the return value added to the search library,id<=0 otherwise. |
